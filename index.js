@@ -20,6 +20,31 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+    const productCollection = client.db("emaJohn").collection("product");
+
+    // get diea servet thake data browser a load korer jono url ta set kore dite hba.
+    app.get("/product", async (req, res) => {
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
+      const query = {};
+      const cursor = productCollection.find(query);
+      let products;
+      if (page || size) {
+        products = await cursor
+          .skip(page * size)
+          .limit(size)
+          .toArray();
+      } else {
+        products = await cursor.toArray();
+      }
+
+      res.send(products);
+    });
+    //koto gula product ase daker jono use kora hoi
+    app.get("/productCount", async (req, res) => {
+      const count = await productCollection.estimatedDocumentCount();
+      res.send({ count }); //res.json(count); ai vabe kora
+    });
   } finally {
   }
 }
