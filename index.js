@@ -65,8 +65,9 @@ app.get("/", (req, res) => {
   res.send("server is running");
 });
 app.get("/hero", (req, res) => {
-  res.send("Hroku is running");
+  res.send("HeroKu is running");
 });
+
 
 app.listen(port, () => {
   console.log("CRUD is running", port);
